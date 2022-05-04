@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -13,6 +14,7 @@ const Container = styled.div`
   &:hover {
     color: #0070f3;
     border-color: #0070f3;
+    cursor: pointer;
   }
 `;
 
@@ -39,19 +41,21 @@ const Porcentage = styled(Text)`
   }};
 `;
 
-const Card = ({ name, symbol, priceUsd, changePercent24Hr }) => {
+const Card = ({ id, name, symbol, priceUsd, changePercent24Hr }) => {
   const priceUsdParsed = `$ ${priceUsd.slice(0, 7).toString()}`;
   const change24hsParsed =
     changePercent24Hr > 0
       ? `+${parseFloat(changePercent24Hr).toFixed(2)}%`
       : `${parseFloat(changePercent24Hr).toFixed(2)}%`;
   return (
-    <Container>
-      <Title>{name}</Title>
-      <Symbol>{symbol}</Symbol>
-      <Text>{priceUsdParsed}</Text>
-      <Porcentage>{change24hsParsed}</Porcentage>
-    </Container>
+    <Link href={`/coin/${id}`}>
+      <Container>
+        <Title>{name}</Title>
+        <Symbol>{symbol}</Symbol>
+        <Text>{priceUsdParsed}</Text>
+        <Porcentage>{change24hsParsed}</Porcentage>
+      </Container>
+    </Link>
   );
 };
 
