@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -18,10 +19,17 @@ const Container = styled.div`
   }
 `;
 
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+`;
+
 const Title = styled.h2`
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
 `;
+
 const Symbol = styled(Title)`
   font-weight: normal;
 `;
@@ -34,29 +42,34 @@ const Text = styled.p`
 
 const Porcentage = styled(Text)`
   color: ${(props) => {
-    const porcentage = Number(props.children.slice(0, -1));
+    const porcentage = props.price;
     if (porcentage > 0) return 'green';
     if (porcentage < 0) return 'red';
     return 'none';
   }};
 `;
 
-const Card = ({ id, name, symbol, priceUsd, changePercent24Hr }) => {
-  const priceUsdParsed = `$ ${priceUsd.slice(0, 7).toString()}`;
-  const change24hsParsed =
-    changePercent24Hr > 0
-      ? `+${parseFloat(changePercent24Hr).toFixed(2)}%`
-      : `${parseFloat(changePercent24Hr).toFixed(2)}%`;
-  return (
-    <Link href={`/coin/${id}`}>
-      <Container>
+const Card = ({
+  id,
+  symbol,
+  name,
+  image,
+  current_price,
+  price_change_percentage_24h,
+}) => (
+  <Link href={`/coin/${id}`} passHref>
+    <Container>
+      <Header>
         <Title>{name}</Title>
-        <Symbol>{symbol}</Symbol>
-        <Text>{priceUsdParsed}</Text>
-        <Porcentage>{change24hsParsed}</Porcentage>
-      </Container>
-    </Link>
-  );
-};
+        <Image src={image} width={30} height={30} />
+      </Header>
+      <Symbol>{symbol.toUpperCase()}</Symbol>
+      <Text>${current_price}</Text>
+      <Porcentage price={price_change_percentage_24h}>
+        {price_change_percentage_24h}%
+      </Porcentage>
+    </Container>
+  </Link>
+);
 
 export default Card;
