@@ -29,12 +29,11 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const Home = () => {
   const { data, error } = useSWR(
-    'https://api.coincap.io/v2/assets?limit=20',
+    'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd',
     fetcher
   );
   if (error) return 'An error has occurred.';
   if (!data) return 'Loading...';
-
   return (
     <div>
       <Head>
@@ -45,7 +44,7 @@ const Home = () => {
       <Main>
         <Title>Crypto stats</Title>
         <CointainerGrid>
-          {data.data.map((el) => (
+          {data.map((el) => (
             <Card key={el.id} {...el} />
           ))}
         </CointainerGrid>
